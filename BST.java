@@ -114,6 +114,33 @@ public class BST<E extends Comparable<E>> extends BinaryTree<E> implements BST_O
     }
 
     /**
+     *  Returns the parent node of the given element, or null if not found
+     *
+     *  @param query The element whose parent to search for
+     *  @return the parent node of the given element, or null if not found
+     */
+    public BST<E> lookupParent(E data) {
+        // Base cases
+        if (this.getData() == null) {
+            return null; /* failed */
+        }
+        if ((this.getLeft() != null) && (this.getLeft().getData() == data)) {
+            return this; /* success */
+        }
+        else if ((this.getRight() != null) && (this.getRight().getData() == data)) {
+            return this; /* success */
+        }
+        // Recursive step
+        if (data.compareTo(this.getData()) < 0) { /* data is smaller */
+            this.getLeft().lookupParent(data);
+        }
+        else {
+            this.getRight().lookupParent(data); /* data is larger */
+        }
+        return this;
+    }
+
+    /**
      *  Deletes the specified element from the tree
      *  Returns the modified tree because the root node 
      *  may have changed
@@ -122,6 +149,10 @@ public class BST<E extends Comparable<E>> extends BinaryTree<E> implements BST_O
      *  @return tree as modified
      */
     public BST<E> deleteWithCopyLeft(E evictee) {
+        // Happy case: evictee has no children -> just delete
+        
+
+
         return new BST<E>(evictee);
     }
 
@@ -147,10 +178,12 @@ public class BST<E extends Comparable<E>> extends BinaryTree<E> implements BST_O
         return new BST<E>(getData());
     }
 
-    // public static void main(String[] args) {
-    //     BST<Integer> tree = new BST<Integer>(5);
-    //     tree.insert(7);
-    //     System.out.println(tree);
-    // }
+    public static void main(String[] args) {
+        BST<Integer> tree = new BST<Integer>(5);
+        tree.insert(7);
+        System.out.println(tree);
+        tree.lookupParent(7).setRight(null);
+        System.out.println(tree);
+    }
 
 }
