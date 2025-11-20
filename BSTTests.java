@@ -45,6 +45,9 @@ public class BSTTests {
 
     // Sample tests...
     @Test
+    /**
+     * Test for correct insertion placement in BST
+     */
     public void testBSTInsertions() {
         Integer[][] gt1 = {{5}};
         Integer[][] gt2 = {{5},{null,7}};

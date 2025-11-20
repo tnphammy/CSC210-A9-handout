@@ -89,6 +89,27 @@ public class BST<E extends Comparable<E>> extends BinaryTree<E> implements BST_O
      *  @param data The element to insert
      */
     public void insert(E data) {
+        if (this.getData() == data) {
+            return;
+        }
+        // Recursive step
+        if (data.compareTo(this.getData()) < 0) { /* data is smaller */
+            if (this.getLeft() == null) {
+                BST<E> newLeft = new BST<E>(data);
+                this.setLeft(newLeft);
+            }
+            this.getLeft().insert(data);
+        }
+        else {
+            if (this.getLeft() == null) {
+                BST<E> newRight = new BST<E>(data);
+                this.setRight(newRight);
+            }
+            else {
+                this.getRight().insert(data); /* data is larger */
+            }
+        }
+        return;
 
     }
 
@@ -125,5 +146,11 @@ public class BST<E extends Comparable<E>> extends BinaryTree<E> implements BST_O
     public BST<E> rotateRight() {
         return new BST<E>(getData());
     }
+
+    // public static void main(String[] args) {
+    //     BST<Integer> tree = new BST<Integer>(5);
+    //     tree.insert(7);
+    //     System.out.println(tree);
+    // }
 
 }
