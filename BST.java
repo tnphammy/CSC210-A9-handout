@@ -38,6 +38,22 @@ public class BST<E extends Comparable<E>> extends BinaryTree<E> implements BST_O
     }
 
     /**
+     * Checks to see if a BST has a left child
+     * @return true or false
+     */
+    public boolean hasLeft() {
+        return (this.getLeft() != null);
+    }
+
+    /**
+     * Checks to see if a BST has a left child
+     * @return true or false
+     */
+    public boolean hasRight() {
+        return (this.getRight() != null);
+    }
+
+    /**
      * Overrides inherited manipulator to only accept BST type
      * 
      * @param left the node to insert to the left
@@ -75,7 +91,6 @@ public class BST<E extends Comparable<E>> extends BinaryTree<E> implements BST_O
             return null; /* failed */
         }
         if (this.getData() == data) {
-            System.out.println("I found you!" + this.getData());
             return this; /* success */
         }
         // Recursive step
@@ -149,18 +164,16 @@ public class BST<E extends Comparable<E>> extends BinaryTree<E> implements BST_O
         if (evictee == null) {
             return null;
         }
-        // Happy Case: Evictee has no children
         BST evicteeNode = lookup(evictee);
-        System.out.println("evicteeNode is: " + evicteeNode);
+
+        // Happy Case: Evictee has no children
         if (evicteeNode.isLeaf()) {
-            System.out.println("I was here 1");
-            BST evicteeParent = lookupParent(evictee);
-            System.out.println("evictee's parent is: " + evicteeParent.getData());
-            // Locate where the evictee is relative to its parent -> Delete
-            if ((evicteeParent.getLeft() != null) && (evicteeParent.getLeft().getData() == evictee)) {
+            BST evicteeParent = lookupParent(evictee); /* get parent for deletion */
+            // Delete the evictee 
+            if ((evicteeParent.hasLeft()) && (evicteeParent.getLeft().getData() == evictee)) {
                 evicteeParent.setLeft(null);
                 return this;
-            } else if ((evicteeParent.getRight() != null) && (evicteeParent.getRight().getData() == evictee)) {
+            } else if ((evicteeParent.hasRight()) && (evicteeParent.getRight().getData() == evictee)) {
                 evicteeParent.setRight(null);
                 return this;
             }
@@ -168,16 +181,33 @@ public class BST<E extends Comparable<E>> extends BinaryTree<E> implements BST_O
         // Complex Case: Evictee has children
         else {
             // 1. Replace evictee with best candidate
-            // 1.1 Find rightmost leaf of left side (stops at its parent called 'temp')
-            BST temp = evicteeNode.getLeft();
-            while (temp.getRight().getRight() != null) {
-                temp = temp.getRight();
+            // Does evictee have left part?
+            if (evicteeNode.hasLeft()) {
+                // Does left part have a rightmost?
+                if (evicteeNode.getLeft().hasRight()) {
+                    // YES
+                    // 1. Find rightmost parent
+                    BST temp = evicteeNode.getLeft();
+                    while (temp.getRight().hasRight()) {
+                        temp = temp.getRight();
+                    }
+                    System.out.println("replacement parent is: " + temp.getData());
+                    // 2. Replace
+                    E replacementData = (E)temp.getRight().getData();
+                    evicteeNode.setData(replacementData);
+                    // 3. Delete
+                    temp.setRight(null);
+                }
+                else {
+                    // NO
+                    evicteeNode.setData(evicteeNode.getLeft().getData()); /* use left data */
+                    evicteeNode.setLeft(null); 
+                }
             }
-            System.out.println("the replacement's parent is: " + temp.getData());
-            E replacementData = (E) temp.getRight().getData();
-            evicteeNode.setData(replacementData);
-            // 2. Erase temp's old link to 'replacement' Node
-            temp.setRight(null);
+            else {
+                evicteeNode.setData(evicteeNode.getRight().getData()); /* use right data */
+                evicteeNode.setRight(null); 
+            }
         }
         return this;
     }
@@ -211,10 +241,11 @@ public class BST<E extends Comparable<E>> extends BinaryTree<E> implements BST_O
         tree.insert(4);
         tree.insert(1);
         tree.insert(6);
+        tree.insert(2);
+        tree.insert(12);
         System.out.println(tree);
-        //System.out.println(tree.lookup(8));
-        System.out.println(tree.lookupParent(9).getData());
-        //System.out.println(tree.deleteWithCopyLeft(9));
+        System.out.println("NEW TREE: " + tree.deleteWithCopyLeft(1));
+
     }
 
 }
