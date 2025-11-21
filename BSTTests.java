@@ -91,4 +91,92 @@ public class BSTTests {
         verifyBT((tree.lookup(5)), gtn);
 
     }
+
+    @Test
+    /**
+     * Checks to see if deleteWithCopyLeft() returns null when element cannot be found
+     */
+    public void testBSTDelete() {
+
+        Integer[][] gt1 = {{11},{4,12}};
+        Integer[][] gt2 = {{4},{null, 12}};
+
+        BST<Integer> tree = new BST<Integer>(11);
+        tree.insert(12);
+        tree.insert(4);
+        verifyBT(tree, gt1);
+        verifyBT(tree.deleteWithCopyLeft(11), gt2);
+    }
+
+    @Test
+    /**
+     * Checks to see if rotateLeft() returns the correct tree
+     */
+    public void testBSTRotateLeft() {
+
+        Integer[][] before = {
+            {12},
+            {6, 18},
+            {3, 9, 16, 24},
+            {null, null, null, null, 15, 17, null, null}
+        };
+        Integer[][] after = {
+            {18},
+            {12, 24},
+            {6, 16, null, null},
+            {3, 9, 15, 17, null, null, null, null}
+        };
+
+        BST<Integer> tree = new BST<Integer>(12);
+        tree.insert(6);
+        tree.insert(18);
+        tree.insert(3);
+        tree.insert(9);
+        tree.insert(16);
+        tree.insert(24);
+        tree.insert(15);
+        tree.insert(17);
+
+        verifyBT(tree, before);
+
+        tree = tree.rotateLeft();
+
+        verifyBT(tree, after);
+    }
+
+    @Test
+    /**
+     * Checks to see if rotateRight() returns the correct tree
+     */
+    public void testBSTRotateRight() {
+
+        Integer[][] before = {
+            {12},
+            {6, 18},
+            {3, 9, 16, 24},
+            {null, null, null, null, 15, 17, null, null}
+        };
+        Integer[][] after = {
+            {6},
+            {3, 12},
+            {null, null, 9, 18},
+            {null, null, null, null, null, null, 16, 24}
+        };
+
+        BST<Integer> tree = new BST<Integer>(12);
+        tree.insert(6);
+        tree.insert(18);
+        tree.insert(3);
+        tree.insert(9);
+        tree.insert(16);
+        tree.insert(24);
+        tree.insert(15);
+        tree.insert(17);
+
+        verifyBT(tree, before);
+
+        tree = tree.rotateRight();
+
+        verifyBT(tree, after);
+    }
 }

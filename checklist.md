@@ -16,9 +16,9 @@ YES 1 pt: Implements insert method correctly
 
 YES 1 pt: Implements delete method correctly
 
-NO 2 pts: Implements left and right rotation methods correctly
+YES 2 pts: Implements left and right rotation methods correctly
 
-NO 1 pt: Includes tests for all the methods above
+YES 1 pt: Includes tests for all the methods above
 
 NO 1 pts: Implements array to binary tree conversion correctly
 
@@ -48,6 +48,6 @@ YES 2 pt: Complies with style guidelines (missing items 1 pt each):
 
       YES Methods avoid confusing side effects
 
-PART 1 pt: All required files included with submission (including completed checklist file)
+YES 1 pt: All required files included with submission (including completed checklist file)
 
 NO 1 pt: readme.md contains reflection on the assignment

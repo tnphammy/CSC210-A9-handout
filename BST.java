@@ -39,6 +39,7 @@ public class BST<E extends Comparable<E>> extends BinaryTree<E> implements BST_O
 
     /**
      * Checks to see if a BST has a left child
+     * 
      * @return true or false
      */
     public boolean hasLeft() {
@@ -47,6 +48,7 @@ public class BST<E extends Comparable<E>> extends BinaryTree<E> implements BST_O
 
     /**
      * Checks to see if a BST has a left child
+     * 
      * @return true or false
      */
     public boolean hasRight() {
@@ -97,15 +99,13 @@ public class BST<E extends Comparable<E>> extends BinaryTree<E> implements BST_O
         if (data.compareTo(this.getData()) < 0) { /* data is smaller */
             if (this.hasLeft()) {
                 return this.getLeft().lookup(data);
-            }
-            else {
+            } else {
                 return null;
             }
         } else {
-            if(this.hasRight()) {
+            if (this.hasRight()) {
                 return this.getRight().lookup(data); /* data is larger */
-            }
-            else {
+            } else {
                 return null;
             }
         }
@@ -132,6 +132,7 @@ public class BST<E extends Comparable<E>> extends BinaryTree<E> implements BST_O
                 BST<E> newRight = new BST<E>(data);
                 this.setRight(newRight);
             }
+            this.getRight().insert(data);
         }
         return;
 
@@ -162,6 +163,39 @@ public class BST<E extends Comparable<E>> extends BinaryTree<E> implements BST_O
     }
 
     /**
+     * Find the node with the smallest value in a tree
+     * 
+     * @return
+     */
+    public BST<E> getMin() {
+        BST temp = this; /* initialize min value */
+
+        if (this.hasLeft()) {
+            while (temp.hasLeft()) {
+                temp = temp.getLeft();
+            }
+        }
+        return temp;
+    }
+
+    /**
+     * Find the node with the smallest value in a tree
+     * 
+     * @return
+     */
+    public BST<E> getMax() {
+        BST temp = this; /* initialize min value */
+
+        if (this.hasRight()) {
+            while (temp.hasRight()) {
+                temp = temp.getRight();
+                System.out.println("temp data max rn: " + temp.getData());
+            }
+        }
+        return temp;
+    }
+
+    /**
      * Deletes the specified element from the tree
      * Returns the modified tree because the root node
      * may have changed
@@ -179,7 +213,7 @@ public class BST<E extends Comparable<E>> extends BinaryTree<E> implements BST_O
         // Happy Case: Evictee has no children
         if (evicteeNode.isLeaf()) {
             BST evicteeParent = lookupParent(evictee); /* get parent for deletion */
-            // Delete the evictee 
+            // Delete the evictee
             if ((evicteeParent.hasLeft()) && (evicteeParent.getLeft().getData() == evictee)) {
                 evicteeParent.setLeft(null);
                 return this;
@@ -203,20 +237,18 @@ public class BST<E extends Comparable<E>> extends BinaryTree<E> implements BST_O
                     }
                     System.out.println("replacement parent is: " + temp.getData());
                     // 2. Replace
-                    E replacementData = (E)temp.getRight().getData();
+                    E replacementData = (E) temp.getRight().getData();
                     evicteeNode.setData(replacementData);
                     // 3. Delete
                     temp.setRight(null);
-                }
-                else {
+                } else {
                     // NO
                     evicteeNode.setData(evicteeNode.getLeft().getData()); /* use left data */
-                    evicteeNode.setLeft(null); 
+                    evicteeNode.setLeft(null);
                 }
-            }
-            else {
+            } else {
                 evicteeNode.setData(evicteeNode.getRight().getData()); /* use right data */
-                evicteeNode.setRight(null); 
+                evicteeNode.setRight(null);
             }
         }
         return this;
@@ -230,8 +262,21 @@ public class BST<E extends Comparable<E>> extends BinaryTree<E> implements BST_O
      * @return tree as modified
      */
     public BST<E> rotateLeft() {
-        return new BST<E>(getData());
+        // 0. Edge case
+        if (!this.hasRight()) {
+            return this;
+        }
+        // 1. Detach old root and its right child, set as new root
+        BST oldRoot = this;
+        BST newRoot = this.getRight();
+        oldRoot.setRight(newRoot.getLeft());
+        // 2. Reattach old root to the left new root
+        newRoot.setLeft(oldRoot);
+        // 3. Return new root
+        return newRoot;
     }
+
+    
 
     /**
      * Apply right rotation
@@ -241,20 +286,42 @@ public class BST<E extends Comparable<E>> extends BinaryTree<E> implements BST_O
      * @return tree as modified
      */
     public BST<E> rotateRight() {
-        return new BST<E>(getData());
+        // 0. Edge case
+        if (!this.hasLeft()) {
+            return this;
+        }
+        // 1. Detach old root and its left child, set as new root
+        BST oldRoot = this;
+        BST newRoot = this.getLeft();
+        oldRoot.setLeft(newRoot.getRight());
+        // 2. Reattach old root to the right of new root
+        newRoot.setRight(oldRoot);
+        // 3. Return new root
+        return newRoot;
     }
 
     public static void main(String[] args) {
-        BST<Integer> tree = new BST<Integer>(11);
-        tree.insert(8);
-        tree.insert(9);
-        tree.insert(4);
-        tree.insert(1);
+        // BST<Integer> tree = new BST<Integer>(11);
+        // // tree.insert(8);
+        // // tree.insert(9);
+        // // tree.insert(4);
+        // // tree.insert(1);
+        // // tree.insert(6);
+        // // tree.insert(2);
+        // tree.insert(12);
+
+        BST<Integer> tree = new BST<Integer>(12);
         tree.insert(6);
-        tree.insert(2);
-        tree.insert(12);
+        tree.insert(3);
+        tree.insert(9);
+        tree.insert(18);
+        tree.insert(16);
+        tree.insert(15);
+        tree.insert(17);
+        tree.insert(24);
         System.out.println(tree);
-        System.out.println(tree.lookup(20));
+        // System.out.println(tree.deleteWithCopyLeft(2));
+        System.out.println(tree.rotateLeft().getData());
 
     }
 
