@@ -58,4 +58,37 @@ public class BSTTests {
         tree.insert(7);
         verifyBT(tree, gt2);
     }
+
+    @Test
+    /**
+     * Checks to see if lookup() gets the right elements
+     */
+    public void testBSTLookup() {
+
+        Integer[][] gt1 = {{5},{null,7}};
+        Integer[][] gt3 = {{7}};
+
+        BST<Integer> tree = new BST<>(5);
+        tree.setRight(new BST(7));
+        verifyBT(tree, gt1);
+
+        verifyBT((tree.lookup(7)), gt3);
+
+    }
+
+    @Test
+    /**
+     * Checks to see if lookup() returns null when element cannot be found
+     */
+    public void testBSTLookupNull() {
+
+        Integer[][] gt1 = {{7}};
+        Integer[][] gtn = {{null}};
+
+        BST<Integer> tree = new BST<>(7);
+        verifyBT(tree, gt1);
+
+        verifyBT((tree.lookup(5)), gtn);
+
+    }
 }

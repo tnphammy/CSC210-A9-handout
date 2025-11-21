@@ -95,9 +95,19 @@ public class BST<E extends Comparable<E>> extends BinaryTree<E> implements BST_O
         }
         // Recursive step
         if (data.compareTo(this.getData()) < 0) { /* data is smaller */
-            return this.getLeft().lookup(data);
+            if (this.hasLeft()) {
+                return this.getLeft().lookup(data);
+            }
+            else {
+                return null;
+            }
         } else {
-            return this.getRight().lookup(data); /* data is larger */
+            if(this.hasRight()) {
+                return this.getRight().lookup(data); /* data is larger */
+            }
+            else {
+                return null;
+            }
         }
     }
 
@@ -244,7 +254,7 @@ public class BST<E extends Comparable<E>> extends BinaryTree<E> implements BST_O
         tree.insert(2);
         tree.insert(12);
         System.out.println(tree);
-        System.out.println("NEW TREE: " + tree.deleteWithCopyLeft(1));
+        System.out.println(tree.lookup(20));
 
     }
 
