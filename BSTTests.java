@@ -160,7 +160,8 @@ public class BSTTests {
             {6},
             {3, 12},
             {null, null, 9, 18},
-            {null, null, null, null, null, null, 16, 24}
+            {null, null, 16, 24},
+            {15, 17, null, null}
         };
 
         BST<Integer> tree = new BST<Integer>(12);

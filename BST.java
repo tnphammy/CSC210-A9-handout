@@ -321,7 +321,7 @@ public class BST<E extends Comparable<E>> extends BinaryTree<E> implements BST_O
         tree.insert(24);
         System.out.println(tree);
         // System.out.println(tree.deleteWithCopyLeft(2));
-        System.out.println(tree.rotateLeft().getData());
+        System.out.println(tree.rotateRight());
 
     }
 
